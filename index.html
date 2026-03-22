@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HyunJuu Kim | Portfolio</title>
+    
+    <script>
+        if (sessionStorage.getItem('introPlayed')) {
+            document.documentElement.classList.add('skip-intro');
+        } else {
+            sessionStorage.setItem('introPlayed', 'true');
+        }
+    </script>
+
+    <style>
+        /* 기본 여백 제거 및 글꼴 설정 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .split-container {
+            position: relative;  
+            height: 100vh;       
+            width: 100vw;
+            overflow: hidden;    
+        }
+
+        /* --- 왼쪽 동영상 영역 --- */
+        .left-pane {
+            position: absolute;  
+            left: 0;
+            top: 0;
+            width: 50vw;         
+            height: 100vh;
+            background-color: #000;
+            z-index: 1;          
+        }
+
+        .left-pane video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 비율을 유지하면서 가로세로 영역에 꽉 차게 만듭니다 */
+        }
+
+        /* --- 오른쪽 영역 (텍스트 및 배경 애니메이션) --- */
+        .right-pane {
+            position: absolute;
+            right: 0;            
+            top: 0;
+            width: 100vw;        
+            height: 100vh;
+            background-color: #ffffff; 
+            z-index: 2;          
+            overflow: hidden;    
+            
+            animation: slideRightPane 1.5s ease-in-out 5.5s forwards;
+        }
+
+        /* 검은색 수조 (초기 배경 역할) */
+        .black-bg-layer {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: #000000;
+            z-index: 0;
+            animation: drainBlackBg 1.5s cubic-bezier(0.4, 0, 0.2, 1) 8.5s forwards;
+        }
+
+        /* 출렁이며 차오르는 하얀색 파도 */
+        .water-wave {
+            position: absolute;
+            top: 100vh;          
+            left: -50vw;         
+            width: 200vw;        
+            height: 200vw;
+            background-color: #ffffff;
+            border-radius: 40%;  
+            z-index: 1;          
+            
+            animation: 
+                waveRise 4s ease-in-out 1.5s forwards,
+                waveSpin 6s linear 1.5s infinite;
+        }
+
+        /* 내용물 컨테이너 (자동 색상 반전) */
+        .content-container {
+            position: relative;
+            z-index: 10;
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column; 
+            justify-content: center;
+            align-items: center;    
+            text-align: center;
+            padding: 40px;
+            
+            mix-blend-mode: difference; 
+            color: #ffffff; 
+        }
+
+        /* --- 공통 애니메이션 지시서 --- */
+        @keyframes drainBlackBg { to { transform: translateY(100vh); } }
+        @keyframes waveRise { 0% { top: 100vh; } 100% { top: -130vw; } }
+        @keyframes waveSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes slideRightPane { to { width: 50vw; } }
+
+        /* 글자 모핑 컨테이너 */
+        .title-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 300px;
+        }
+
+        .text-hello, .text-hyun, .main-title {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .text-hello { font-size: 4rem; font-weight: 800; opacity: 0; animation: helloMorph 5.5s ease-in-out forwards; }
+        .text-hyun { font-size: 4rem; font-weight: 800; opacity: 0; animation: hyunMorph 5.5s ease-in-out forwards; }
+        .main-title { font-size: 4rem; line-height: 0.9; font-weight: 800; letter-spacing: -2px; opacity: 0; animation: weBuildMorph 1.5s ease-in-out 5.5s forwards; }
+        .fade-in-item { opacity: 0; animation: fadeInItem 1.5s ease-in-out 6s forwards; }
+
+        @keyframes helloMorph {
+            0%   { opacity: 0; filter: blur(15px); letter-spacing: 10px; } 
+            10%  { opacity: 1; filter: blur(0px); letter-spacing: -2px; }  
+            35%  { opacity: 1; filter: blur(0px); letter-spacing: -2px; }  
+            45%  { opacity: 0; filter: blur(20px); letter-spacing: -20px; } 
+            100% { opacity: 0; filter: blur(20px); letter-spacing: -20px; visibility: hidden; }
+        }
+
+        @keyframes hyunMorph {
+            0%   { opacity: 0; filter: blur(20px); letter-spacing: -20px; } 
+            40%  { opacity: 0; filter: blur(20px); letter-spacing: -20px; } 
+            45%  { opacity: 1; filter: blur(20px); letter-spacing: -20px; } 
+            55%  { opacity: 1; filter: blur(0px); letter-spacing: -2px; }   
+            90%  { opacity: 1; filter: blur(0px); letter-spacing: -2px; }   
+            100% { opacity: 0; filter: blur(20px); letter-spacing: -20px; visibility: hidden; } 
+        }
+
+        @keyframes weBuildMorph {
+            0%   { opacity: 0; filter: blur(20px); letter-spacing: -20px; } 
+            100% { opacity: 1; filter: blur(0px); letter-spacing: -2px; }
+        }
+
+        @keyframes fadeInItem {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 텍스트 디테일 및 중앙 정렬 */
+        .small-title {
+            font-size: 0.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-top: 80px;    
+            margin-bottom: 20px;
+        }
+
+        .description {
+            font-family: 'Georgia', serif; 
+            font-size: 1.2rem;
+            max-width: 400px; 
+            line-height: 1.5;
+            margin-top: 30px;
+            margin-bottom: 50px;
+            white-space: normal;
+        }
+
+        .button-group { display: flex; }
+        .action-btn {
+            padding: 15px 30px;
+            background-color: transparent;
+            border: 1px solid #ffffff; 
+            color: #ffffff;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease; 
+        }
+        .btn-left { border-right: none; }
+        .action-btn:hover { background-color: #ffffff; color: #000000; }
+
+
+        /* ==========================================================
+           🌟 1. 인트로 스킵 시 적용되는 CSS (뒤로가기 시 인트로 생략)
+           ========================================================== */
+        html.skip-intro .right-pane { animation: none !important; width: 50vw !important; }
+        html.skip-intro .black-bg-layer,
+        html.skip-intro .water-wave,
+        html.skip-intro .text-hello,
+        html.skip-intro .text-hyun { display: none !important; animation: none !important; }
+        html.skip-intro .main-title { animation: none !important; opacity: 1 !important; filter: blur(0px) !important; letter-spacing: -2px !important; }
+        html.skip-intro .fade-in-item { animation: none !important; opacity: 1 !important; transform: translateY(0) !important; }
+
+
+        /* ==========================================================
+           🌟 2. 모바일/태블릿 반응형 (위아래 정렬 및 가로 확장)
+           ========================================================== */
+        @media (max-width: 768px) {
+            /* 동영상 영역 가로로 100vw 꽉 차게 늘림 */
+            .left-pane {
+                width: 100vw;
+                height: 50vh;
+            }
+            
+            /* 오른쪽 텍스트 창은 애니메이션 방향을 '아래'로 변경 */
+            .right-pane {
+                animation: slideDownPane 1.5s ease-in-out 5.5s forwards;
+                width: 100vw; /* 항상 화면 너비 꽉 차게 유지 */
+            }
+            
+            @keyframes slideDownPane {
+                to { height: 50vh; top: 50vh; } /* 화면 아래쪽 절반으로 쏙 밀려남 */
+            }
+
+            /* 모바일에서 스킵(뒤로가기) 시 즉시 위아래 반반 화면으로 구성 */
+            html.skip-intro .right-pane {
+                width: 100vw !important;
+                height: 50vh !important;
+                top: 50vh !important;
+            }
+
+            /* 글자 크기 및 여백 모바일에 맞게 조절 */
+            .main-title, .text-hello, .text-hyun { font-size: 2.5rem; }
+            .small-title { margin-top: 20px; }
+            .description { font-size: 1rem; margin-bottom: 30px; padding: 0 20px; }
+            .title-container { height: 180px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="split-container">
+        <div class="left-pane">
+            <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted playsinline></video>
+        </div>
+
+        <div class="right-pane">
+            
+            <div class="black-bg-layer"></div> 
+            <div class="water-wave"></div> 
+            
+            <div class="content-container">
+                <p class="small-title fade-in-item">CERTIFIED SHOPIFY PLUS PARTNER</p>
+                
+                <div class="title-container">
+                    <span class="text-hello">HELLO.</span>
+                    <span class="text-hyun">I'M HYUN.</span>
+                    <h1 class="main-title">THE JOURNEY<br>OF BUILDING<br>BRANDS &<br>DIGITAL<br>STORES</h1>
+                </div>
+                
+                <p class="description fade-in-item">We shape the future of commerce by delivering cohesive & captivating omnichannel experiences that connect to convert.</p>
+                
+                <div class="button-group fade-in-item">
+                    <button class="action-btn btn-left" onclick="location.href='work.html'">PORTFOILO</button>
+                    <button class="action-btn" onclick="location.href='contact.html'">CONTACT ME</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+</body>
+</html>

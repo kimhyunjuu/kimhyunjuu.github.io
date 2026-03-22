@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONTACT ME</title>
+    <style>
+        /* 기본 설정 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #000; 
+            color: #fff;
+            /* 🌟 수정: 무조건 화면에 욱여넣지 않고 최소 높이만 지정 후 스크롤 허용 */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; 
+        }
+
+        /* 상단 뒤로가기 버튼 */
+        .header {
+            padding: 40px;
+        }
+        .back-btn {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1rem;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+        .back-btn:hover { opacity: 1; }
+
+        /* 메인 슬로건 영역 (이미지 + 텍스트 가로 정렬) */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 10%;
+            gap: 100px; 
+        }
+
+        /* PC 버전 이미지 스타일 */
+        .side-image {
+            width: 180px; 
+            height: auto;
+            border-radius: 4px; 
+            object-fit: cover;
+        }
+
+        .slogan {
+            font-size: clamp(1.5rem, 4vw, 3.2rem); 
+            line-height: 1.1;
+            font-weight: 500;
+            text-align: left; 
+            letter-spacing: -1px;
+            word-break: keep-all;
+            max-width: 800px;
+        }
+
+        /* 하단 정보 영역 */
+        .footer-info {
+            padding: 60px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px solid #333;
+        }
+
+        .info-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            opacity: 0.5;
+            margin-bottom: 5px;
+        }
+
+        .info-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+            border-bottom: 1px solid transparent;
+        }
+
+        .info-link:hover {
+            color: #aaa;
+            border-bottom: 1px solid #aaa;
+        }
+
+        /* ==========================================================
+           🌟 모바일 반응형 대응 (화면이 줄어들 때)
+           ========================================================== */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column; 
+                text-align: center;
+                gap: 30px; 
+                /* 🌟 추가: 위아래 여백을 충분히 주어서 선에 딱 붙지 않게 만듭니다! */
+                padding: 40px 10%; 
+            }
+            
+            .side-image { 
+                width: 260px; 
+                border-radius: 8px; 
+            }
+            
+            .slogan { 
+                font-size: 1.8rem; 
+                text-align: center; 
+                /* 🌟 추가: 글자 밑에도 여백을 밀어 넣어 푸터 라인과 거리 두기 */
+                margin-bottom: 20px; 
+            }
+            
+            .footer-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 30px;
+                padding-bottom: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="index.html" class="back-btn">← BACK</a>
+    </header>
+
+    <main class="main-content">
+        <img src="c:\Users\JHW\Desktop\1\my profile.jpg" alt="Partner Image" class="side-image">
+        
+        <h1 class="slogan">
+            Greatness starts with a single conversation. Beyond aesthetics, toward lasting impact. Let’s build the next generation, together!
+        </h1>
+    </main>
+
+    <footer class="footer-info">
+        <div class="info-group">
+            <span class="info-label">Get in touch</span>
+        </div>
+
+        <div class="info-group">
+            <span class="info-label">Instagram</span>
+            <a href="https://www.instagram.com/hun.its.ai?igsh=YjR0Z3EyNzc1c3g2&utm_source=qr" target="_blank" class="info-link">@hun.its.ai</a>
+        </div>
+
+        <div class="info-group">
+            <span class="info-label">Pinterest</span>
+            <a href="https://pin.it/3QWMbwBuu" target="_blank" class="info-link">@hyunyhi</a>
+        </div>
+
+        <div class="info-group">
+            <span class="info-label">Behance</span>
+            <a href="https://www.behance.net/hyunny/" target="_blank" class="info-link">@ohhyun</a>
+        </div>
+
+        <div class="info-group">
+            <span class="info-label">Email</span>
+            <a href="mailto:cccat980@gmail.com" class="info-link">cccat980@gmail.com</a>
+        </div>
+    </footer>
+
+</body>
+</html>
