@@ -43,7 +43,7 @@
         .left-pane video {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* 비율을 유지하면서 가로세로 영역에 꽉 차게 만듭니다 */
+            object-fit: cover; 
         }
 
         /* --- 오른쪽 영역 (텍스트 및 배경 애니메이션) --- */
@@ -126,6 +126,7 @@
             white-space: nowrap;
         }
 
+        /* PC 버전 글꼴 크기 */
         .text-hello { font-size: 4rem; font-weight: 800; opacity: 0; animation: helloMorph 5.5s ease-in-out forwards; }
         .text-hyun { font-size: 4rem; font-weight: 800; opacity: 0; animation: hyunMorph 5.5s ease-in-out forwards; }
         .main-title { font-size: 4rem; line-height: 0.9; font-weight: 800; letter-spacing: -2px; opacity: 0; animation: weBuildMorph 1.5s ease-in-out 5.5s forwards; }
@@ -193,7 +194,7 @@
 
 
         /* ==========================================================
-           🌟 1. 인트로 스킵 시 적용되는 CSS (뒤로가기 시 인트로 생략)
+           🌟 1. 인트로 스킵 시 적용되는 CSS 
            ========================================================== */
         html.skip-intro .right-pane { animation: none !important; width: 50vw !important; }
         html.skip-intro .black-bg-layer,
@@ -205,37 +206,69 @@
 
 
         /* ==========================================================
-           🌟 2. 모바일/태블릿 반응형 (위아래 정렬 및 가로 확장)
+           🌟 2. 모바일 반응형 (글자 간격 촘촘하게 압축!)
            ========================================================== */
         @media (max-width: 768px) {
-            /* 동영상 영역 가로로 100vw 꽉 차게 늘림 */
-            .left-pane {
-                width: 100vw;
-                height: 50vh;
+            body, html { overflow-x: hidden; }
+            .split-container { overflow: visible; }
+            
+            .left-pane { width: 100vw; height: 50vh; }
+            
+            .right-pane { 
+                width: 100vw; 
+                height: auto; 
+                min-height: 100vh; 
+                animation: slideDownPane 1.5s ease-in-out 5.5s forwards; 
+            }
+            @keyframes slideDownPane { 
+                to { top: 50vh; min-height: 50vh; } 
             }
             
-            /* 오른쪽 텍스트 창은 애니메이션 방향을 '아래'로 변경 */
-            .right-pane {
-                animation: slideDownPane 1.5s ease-in-out 5.5s forwards;
-                width: 100vw; /* 항상 화면 너비 꽉 차게 유지 */
+            html.skip-intro .right-pane { 
+                width: 100vw !important; 
+                height: auto !important; 
+                min-height: 50vh !important; 
+                top: 50vh !important; 
+            }
+
+            .content-container {
+                height: auto;
+                min-height: 50vh;
+                padding: 50px 20px 70px 20px;
+            }
+
+            .pc-only { display: none; }
+
+            /* 💡 메인 타이틀 줄 간격(line-height)을 1.2로 살짝 더 타이트하게! */
+            .main-title { 
+                font-size: 2rem; 
+                line-height: 1.2; 
+                letter-spacing: -1px; 
+            }
+            .text-hello, .text-hyun { 
+                font-size: 2.2rem; 
             }
             
-            @keyframes slideDownPane {
-                to { height: 50vh; top: 50vh; } /* 화면 아래쪽 절반으로 쏙 밀려남 */
+            /* 💡 핵심: 120px이던 상자 높이를 95px로 확 줄여서 위아래 글씨를 바짝 당겼습니다! */
+            .title-container { 
+                height: 95px; 
+                margin: 5px 0; /* 상하 마진도 최소화 */
+            }
+            
+            /* 💡 위쪽 소제목 마진 축소 */
+            .small-title { 
+                margin-top: 0; 
+                margin-bottom: 5px; /* 10px -> 5px로 축소 */
             }
 
-            /* 모바일에서 스킵(뒤로가기) 시 즉시 위아래 반반 화면으로 구성 */
-            html.skip-intro .right-pane {
-                width: 100vw !important;
-                height: 50vh !important;
-                top: 50vh !important;
+            /* 💡 아래쪽 설명글 마진 및 줄간격 축소 */
+            .description { 
+                font-size: 0.95rem; 
+                margin-top: 5px; /* 10px -> 5px로 축소 */
+                margin-bottom: 30px; 
+                line-height: 1.4; /* 1.5 -> 1.4로 본문 줄 간격도 살짝 타이트하게 */
+                padding: 0 10px; 
             }
-
-            /* 글자 크기 및 여백 모바일에 맞게 조절 */
-            .main-title, .text-hello, .text-hyun { font-size: 2.5rem; }
-            .small-title { margin-top: 20px; }
-            .description { font-size: 1rem; margin-bottom: 30px; padding: 0 20px; }
-            .title-container { height: 180px; }
         }
     </style>
 </head>
@@ -257,7 +290,8 @@
                 <div class="title-container">
                     <span class="text-hello">HELLO.</span>
                     <span class="text-hyun">I'M HYUN.</span>
-                    <h1 class="main-title">THE JOURNEY<br>OF BUILDING<br>BRANDS &<br>DIGITAL<br>STORES</h1>
+                    
+                    <h1 class="main-title">THE JOURNEY <br class="pc-only">OF BUILDING<br>BRANDS & <br class="pc-only">DIGITAL <br class="pc-only">STORES</h1>
                 </div>
                 
                 <p class="description fade-in-item">We shape the future of commerce by delivering cohesive & captivating omnichannel experiences that connect to convert.</p>

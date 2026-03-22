@@ -28,13 +28,20 @@
             z-index: 100;
         }
 
+        /* 🌟 수정된 뒤로가기 버튼 (contact.html과 동일한 두께/크기로 통일) */
         .back-btn {
             text-decoration: none;
-            color: #000;
-            font-weight: bold;
-            font-size: 1.2rem;
-            letter-spacing: -1px;
+            color: #000;          /* 배경이 흰색이므로 검은색 유지 */
+            font-size: 1rem;      /* 1.2rem -> 1rem 으로 축소 */
+            font-weight: normal;  /* bold 제거 (얇게) */
+            letter-spacing: 0;    /* 좁은 자간 제거 */
+            opacity: 0.6;         /* contact.html처럼 살짝 연하게 */
+            transition: opacity 0.3s;
             cursor: pointer;
+        }
+
+        .back-btn:hover { 
+            opacity: 1;           /* 마우스 올리면 진해지는 효과 통일 */
         }
 
         /* 바둑판 갤러리 */
@@ -82,7 +89,7 @@
             transform: translateY(20px); 
             opacity: 0;
             transition: all 0.4s ease;
-            will-change: transform, opacity; /* 텍스트 애니메이션도 최적화 */
+            will-change: transform, opacity; 
         }
 
         .card-info h3 { font-size: 1.3rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;}
@@ -106,8 +113,8 @@
             max-width: 1200px;
             margin: 0 auto;   
             position: relative;
-            animation: zoomIn 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards; /* 0.3초로 단축하여 빠릿하게 */
-            will-change: transform, opacity; /* GPU에게 팝업 애니메이션 전담시킴 */
+            animation: zoomIn 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards; 
+            will-change: transform, opacity; 
             transform: translateZ(0);
         }
 
