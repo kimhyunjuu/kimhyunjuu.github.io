@@ -29,21 +29,55 @@
             overflow: hidden;    
         }
 
-        /* --- 왼쪽 동영상 영역 --- */
+        /* --- 왼쪽 무한 롤링 갤러리 영역 --- */
         .left-pane {
             position: absolute;  
             left: 0;
             top: 0;
             width: 50vw;         
             height: 100vh;
-            background-color: #000;
+            background-color: #111;
             z-index: 1;          
+            overflow: hidden;
         }
 
-        .left-pane video {
+        /* 슬라이드 트랙: 애니메이션이 적용될 긴 레일 */
+        .slide-track {
+            display: flex;
+            flex-direction: column;
+            /* 🌟 속도를 45초로 단축하여 훨씬 빠르고 시원하게 롤링되도록 설정! */
+            animation: scrollVertical 45s linear infinite;
+        }
+
+        .left-pane:hover .slide-track {
+            animation-play-state: paused;
+        }
+
+        .slide-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            padding: 5px;
+        }
+
+        .slide-item {
+            width: 100%;
+            position: relative;
+            aspect-ratio: 4/5;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .slide-item img {
             width: 100%;
             height: 100%;
-            object-fit: cover; 
+            object-fit: cover;
+            display: block;
+        }
+
+        @keyframes scrollVertical {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
         }
 
         /* --- 오른쪽 영역 (텍스트 및 배경 애니메이션) --- */
@@ -53,14 +87,13 @@
             top: 0;
             width: 100vw;        
             height: 100vh;
-            background-color: #ffffff; 
+            background-color: #ffffff;
             z-index: 2;          
             overflow: hidden;    
             
             animation: slideRightPane 1.5s ease-in-out 5.5s forwards;
         }
 
-        /* 검은색 수조 (초기 배경 역할) */
         .black-bg-layer {
             position: absolute;
             top: 0; left: 0;
@@ -70,7 +103,6 @@
             animation: drainBlackBg 1.5s cubic-bezier(0.4, 0, 0.2, 1) 8.5s forwards;
         }
 
-        /* 출렁이며 차오르는 하얀색 파도 */
         .water-wave {
             position: absolute;
             top: 100vh;          
@@ -81,34 +113,31 @@
             border-radius: 40%;  
             z-index: 1;          
             
-            animation: 
+            animation:
                 waveRise 4s ease-in-out 1.5s forwards,
                 waveSpin 6s linear 1.5s infinite;
         }
 
-        /* 내용물 컨테이너 (자동 색상 반전) */
         .content-container {
             position: relative;
             z-index: 10;
             width: 100%; height: 100%;
             display: flex;
-            flex-direction: column; 
+            flex-direction: column;
             justify-content: center;
             align-items: center;    
             text-align: center;
             padding: 40px;
             
-            mix-blend-mode: difference; 
-            color: #ffffff; 
+            mix-blend-mode: difference;
+            color: #ffffff;
         }
 
-        /* --- 공통 애니메이션 지시서 --- */
         @keyframes drainBlackBg { to { transform: translateY(100vh); } }
         @keyframes waveRise { 0% { top: 100vh; } 100% { top: -130vw; } }
         @keyframes waveSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes slideRightPane { to { width: 50vw; } }
 
-        /* 글자 모핑 컨테이너 */
         .title-container {
             position: relative;
             display: flex;
@@ -126,31 +155,30 @@
             white-space: nowrap;
         }
 
-        /* PC 버전 글꼴 크기 */
         .text-hello { font-size: 4rem; font-weight: 800; opacity: 0; animation: helloMorph 5.5s ease-in-out forwards; }
         .text-hyun { font-size: 4rem; font-weight: 800; opacity: 0; animation: hyunMorph 5.5s ease-in-out forwards; }
         .main-title { font-size: 4rem; line-height: 0.9; font-weight: 800; letter-spacing: -2px; opacity: 0; animation: weBuildMorph 1.5s ease-in-out 5.5s forwards; }
         .fade-in-item { opacity: 0; animation: fadeInItem 1.5s ease-in-out 6s forwards; }
 
         @keyframes helloMorph {
-            0%   { opacity: 0; filter: blur(15px); letter-spacing: 10px; } 
+            0%   { opacity: 0; filter: blur(15px); letter-spacing: 10px; }
             10%  { opacity: 1; filter: blur(0px); letter-spacing: -2px; }  
             35%  { opacity: 1; filter: blur(0px); letter-spacing: -2px; }  
-            45%  { opacity: 0; filter: blur(20px); letter-spacing: -20px; } 
+            45%  { opacity: 0; filter: blur(20px); letter-spacing: -20px; }
             100% { opacity: 0; filter: blur(20px); letter-spacing: -20px; visibility: hidden; }
         }
 
         @keyframes hyunMorph {
-            0%   { opacity: 0; filter: blur(20px); letter-spacing: -20px; } 
-            40%  { opacity: 0; filter: blur(20px); letter-spacing: -20px; } 
-            45%  { opacity: 1; filter: blur(20px); letter-spacing: -20px; } 
-            55%  { opacity: 1; filter: blur(0px); letter-spacing: -2px; }   
-            90%  { opacity: 1; filter: blur(0px); letter-spacing: -2px; }   
-            100% { opacity: 0; filter: blur(20px); letter-spacing: -20px; visibility: hidden; } 
+            0%   { opacity: 0; filter: blur(20px); letter-spacing: -20px; }
+            40%  { opacity: 0; filter: blur(20px); letter-spacing: -20px; }
+            45%  { opacity: 1; filter: blur(20px); letter-spacing: -20px; }
+            55%  { opacity: 1; filter: blur(0px); letter-spacing: -2px; }  
+            90%  { opacity: 1; filter: blur(0px); letter-spacing: -2px; }  
+            100% { opacity: 0; filter: blur(20px); letter-spacing: -20px; visibility: hidden; }
         }
 
         @keyframes weBuildMorph {
-            0%   { opacity: 0; filter: blur(20px); letter-spacing: -20px; } 
+            0%   { opacity: 0; filter: blur(20px); letter-spacing: -20px; }
             100% { opacity: 1; filter: blur(0px); letter-spacing: -2px; }
         }
 
@@ -159,7 +187,6 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* 텍스트 디테일 및 중앙 정렬 */
         .small-title {
             font-size: 0.8rem;
             font-weight: bold;
@@ -169,33 +196,35 @@
         }
 
         .description {
-            font-family: 'Georgia', serif; 
+            font-family: 'Georgia', serif;
             font-size: 1.2rem;
-            max-width: 400px; 
+            max-width: 400px;
             line-height: 1.5;
             margin-top: 30px;
             margin-bottom: 50px;
             white-space: normal;
         }
 
-        .button-group { display: flex; }
+        /* 🌟 버튼 그룹: 사이 간격을 4px로 설정 */
+        .button-group { 
+            display: flex; 
+            gap: 4px; 
+        }
+
         .action-btn {
             padding: 15px 30px;
             background-color: transparent;
-            border: 1px solid #ffffff; 
+            border: 1px solid #ffffff; /* 모든 테두리 활성화 */
             color: #ffffff;
             font-size: 0.8rem;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease; 
+            transition: all 0.3s ease;
         }
-        .btn-left { border-right: none; }
+
         .action-btn:hover { background-color: #ffffff; color: #000000; }
 
-
-        /* ==========================================================
-           🌟 1. 인트로 스킵 시 적용되는 CSS 
-           ========================================================== */
+        /* --- 1. 인트로 스킵 시 적용되는 CSS --- */
         html.skip-intro .right-pane { animation: none !important; width: 50vw !important; }
         html.skip-intro .black-bg-layer,
         html.skip-intro .water-wave,
@@ -204,70 +233,54 @@
         html.skip-intro .main-title { animation: none !important; opacity: 1 !important; filter: blur(0px) !important; letter-spacing: -2px !important; }
         html.skip-intro .fade-in-item { animation: none !important; opacity: 1 !important; transform: translateY(0) !important; }
 
-
-        /* ==========================================================
-           🌟 2. 모바일 반응형 (글자 간격 촘촘하게 압축!)
-           ========================================================== */
+        /* --- 2. 모바일 반응형 --- */
         @media (max-width: 768px) {
             body, html { overflow-x: hidden; }
             .split-container { overflow: visible; }
-            
             .left-pane { width: 100vw; height: 50vh; }
-            
-            .right-pane { 
-                width: 100vw; 
-                height: auto; 
-                min-height: 100vh; 
-                animation: slideDownPane 1.5s ease-in-out 5.5s forwards; 
+            .right-pane {
+                width: 100vw;
+                height: auto;
+                min-height: 100vh;
+                animation: slideDownPane 1.5s ease-in-out 5.5s forwards;
             }
-            @keyframes slideDownPane { 
-                to { top: 50vh; min-height: 50vh; } 
+            @keyframes slideDownPane {
+                to { top: 50vh; min-height: 50vh; }
             }
-            
-            html.skip-intro .right-pane { 
-                width: 100vw !important; 
-                height: auto !important; 
-                min-height: 50vh !important; 
-                top: 50vh !important; 
+            html.skip-intro .right-pane {
+                width: 100vw !important;
+                height: auto !important;
+                min-height: 50vh !important;
+                top: 50vh !important;
             }
-
             .content-container {
                 height: auto;
                 min-height: 50vh;
                 padding: 50px 20px 70px 20px;
             }
-
             .pc-only { display: none; }
-
-            /* 💡 메인 타이틀 줄 간격(line-height)을 1.2로 살짝 더 타이트하게! */
-            .main-title { 
-                font-size: 2rem; 
-                line-height: 1.2; 
-                letter-spacing: -1px; 
+            .main-title {
+                font-size: 2rem;
+                line-height: 1.2;
+                letter-spacing: -1px;
             }
-            .text-hello, .text-hyun { 
-                font-size: 2.2rem; 
+            .text-hello, .text-hyun {
+                font-size: 2.2rem;
             }
-            
-            /* 💡 핵심: 120px이던 상자 높이를 95px로 확 줄여서 위아래 글씨를 바짝 당겼습니다! */
-            .title-container { 
-                height: 95px; 
-                margin: 5px 0; /* 상하 마진도 최소화 */
+            .title-container {
+                height: 95px;
+                margin: 5px 0;
             }
-            
-            /* 💡 위쪽 소제목 마진 축소 */
-            .small-title { 
-                margin-top: 0; 
-                margin-bottom: 5px; /* 10px -> 5px로 축소 */
+            .small-title {
+                margin-top: 0;
+                margin-bottom: 5px;
             }
-
-            /* 💡 아래쪽 설명글 마진 및 줄간격 축소 */
-            .description { 
-                font-size: 0.95rem; 
-                margin-top: 5px; /* 10px -> 5px로 축소 */
-                margin-bottom: 30px; 
-                line-height: 1.4; /* 1.5 -> 1.4로 본문 줄 간격도 살짝 타이트하게 */
-                padding: 0 10px; 
+            .description {
+                font-size: 0.95rem;
+                margin-top: 5px;
+                margin-bottom: 30px;
+                line-height: 1.4;
+                padding: 0 10px;
             }
         }
     </style>
@@ -276,34 +289,87 @@
 
     <div class="split-container">
         <div class="left-pane">
-            <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted playsinline></video>
+            <div class="slide-track">
+                <div class="slide-grid">
+                    <div class="slide-item"><img src="src/1.jpg" alt="1"></div>
+                    <div class="slide-item"><img src="src/2.jpg" alt="2"></div>
+                    <div class="slide-item"><img src="src/3.jpg" alt="3"></div>
+                    <div class="slide-item"><img src="src/4.jpg" alt="4"></div>
+                    <div class="slide-item"><img src="src/5.jpg" alt="5"></div>
+                    <div class="slide-item"><img src="src/6.jpg" alt="6"></div>
+                    <div class="slide-item"><img src="src/7.jpg" alt="7"></div>
+                    <div class="slide-item"><img src="src/8.jpg" alt="8"></div>
+                    <div class="slide-item"><img src="src/9.jpg" alt="9"></div>
+                    <div class="slide-item"><img src="src/10.jpg" alt="10"></div>
+                    <div class="slide-item"><img src="src/11.jpg" alt="11"></div>
+                    <div class="slide-item"><img src="src/12.jpg" alt="12"></div>
+                    <div class="slide-item"><img src="src/13.jpg" alt="13"></div>
+                    <div class="slide-item"><img src="src/14.jpg" alt="14"></div>
+                    <div class="slide-item"><img src="src/detail_1.jpg" alt="detail 1"></div>
+                    <div class="slide-item"><img src="src/detail_2.jpg" alt="detail 2"></div>
+                    <div class="slide-item"><img src="src/detail_3.jpg" alt="detail 3"></div>
+                    <div class="slide-item"><img src="src/detail_4.jpg" alt="detail 4"></div>
+                    <div class="slide-item"><img src="src/detail_5.jpg" alt="detail 5"></div>
+                    <div class="slide-item"><img src="src/detail_6.jpg" alt="detail 6"></div>
+                    <div class="slide-item"><img src="src/detail_7.jpg" alt="detail 7"></div>
+                    <div class="slide-item"><img src="src/detail_8.jpg" alt="detail 8"></div>
+                    <div class="slide-item"><img src="src/detail_9.jpg" alt="detail 9"></div>
+                    <div class="slide-item"><img src="src/detail_10.jpg" alt="detail 10"></div>
+                    <div class="slide-item"><img src="src/detail_11.jpg" alt="detail 11"></div>
+                    <div class="slide-item"><img src="src/detail_12.jpg" alt="detail 12"></div>
+                    <div class="slide-item"><img src="src/detail_13.jpg" alt="detail 13"></div>
+                    <div class="slide-item"><img src="src/detail_14.jpg" alt="detail 14"></div>
+                </div>
+                <div class="slide-grid">
+                    <div class="slide-item"><img src="src/1.jpg" alt="1"></div>
+                    <div class="slide-item"><img src="src/2.jpg" alt="2"></div>
+                    <div class="slide-item"><img src="src/3.jpg" alt="3"></div>
+                    <div class="slide-item"><img src="src/4.jpg" alt="4"></div>
+                    <div class="slide-item"><img src="src/5.jpg" alt="5"></div>
+                    <div class="slide-item"><img src="src/6.jpg" alt="6"></div>
+                    <div class="slide-item"><img src="src/7.jpg" alt="7"></div>
+                    <div class="slide-item"><img src="src/8.jpg" alt="8"></div>
+                    <div class="slide-item"><img src="src/9.jpg" alt="9"></div>
+                    <div class="slide-item"><img src="src/10.jpg" alt="10"></div>
+                    <div class="slide-item"><img src="src/11.jpg" alt="11"></div>
+                    <div class="slide-item"><img src="src/12.jpg" alt="12"></div>
+                    <div class="slide-item"><img src="src/13.jpg" alt="13"></div>
+                    <div class="slide-item"><img src="src/14.jpg" alt="14"></div>
+                    <div class="slide-item"><img src="src/detail_1.jpg" alt="detail 1"></div>
+                    <div class="slide-item"><img src="src/detail_2.jpg" alt="detail 2"></div>
+                    <div class="slide-item"><img src="src/detail_3.jpg" alt="detail 3"></div>
+                    <div class="slide-item"><img src="src/detail_4.jpg" alt="detail 4"></div>
+                    <div class="slide-item"><img src="src/detail_5.jpg" alt="detail 5"></div>
+                    <div class="slide-item"><img src="src/detail_6.jpg" alt="detail 6"></div>
+                    <div class="slide-item"><img src="src/detail_7.jpg" alt="detail 7"></div>
+                    <div class="slide-item"><img src="src/detail_8.jpg" alt="detail 8"></div>
+                    <div class="slide-item"><img src="src/detail_9.jpg" alt="detail 9"></div>
+                    <div class="slide-item"><img src="src/detail_10.jpg" alt="detail 10"></div>
+                    <div class="slide-item"><img src="src/detail_11.jpg" alt="detail 11"></div>
+                    <div class="slide-item"><img src="src/detail_12.jpg" alt="detail 12"></div>
+                    <div class="slide-item"><img src="src/detail_13.jpg" alt="detail 13"></div>
+                    <div class="slide-item"><img src="src/detail_14.jpg" alt="detail 14"></div>
+                </div>
+            </div>
         </div>
 
         <div class="right-pane">
-            
-            <div class="black-bg-layer"></div> 
-            <div class="water-wave"></div> 
-            
+            <div class="black-bg-layer"></div>
+            <div class="water-wave"></div>
             <div class="content-container">
-                <p class="small-title fade-in-item">CERTIFIED SHOPIFY PLUS PARTNER</p>
-                
+                <p class="small-title fade-in-item">UX STRATEGIST & VISUAL DESIGNER</p>
                 <div class="title-container">
                     <span class="text-hello">HELLO.</span>
                     <span class="text-hyun">I'M HYUN.</span>
-                    
                     <h1 class="main-title">THE JOURNEY <br class="pc-only">OF BUILDING<br>BRANDS & <br class="pc-only">DIGITAL <br class="pc-only">STORES</h1>
                 </div>
-                
-                <p class="description fade-in-item">We shape the future of commerce by delivering cohesive & captivating omnichannel experiences that connect to convert.</p>
-                
+                <p class="description fade-in-item">I redefine the user journey by delivering multi-dimensional & immersive digital experiences that convert interactions into lasting brand connections.</p>
                 <div class="button-group fade-in-item">
-                    <button class="action-btn btn-left" onclick="location.href='work.html'">PORTFOILO</button>
-                    <button class="action-btn" onclick="location.href='contact.html'">CONTACT ME</button>
+                    <button class="action-btn" onclick="location.href='work.html'">MY WORK</button>
+                    <button class="action-btn" onclick="location.href='contact.html'">ABOUT ME</button>
                 </div>
             </div>
-            
         </div>
     </div>
-
 </body>
 </html>
