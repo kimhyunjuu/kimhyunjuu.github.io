@@ -88,7 +88,7 @@
             border-radius: 4px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             display: flex;
-            height: 450px; /* 카드 높이 고정 (선택사항) */
+            height: 450px; 
             transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
@@ -104,12 +104,15 @@
 
         .card:hover img { transform: scale(1.03); }
 
-        /* 카드 호버 정보 */
+        /* 🔥 수정된 부분: 카드 호버 정보 */
         .card-info {
             position: absolute;
             bottom: 0; left: 0; width: 100%;
             padding: 40px 30px 30px 30px;
-            background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+            /* 배경을 짙은 반투명 검은색으로 변경하여 텍스트 가독성 확보 */
+            background-color: rgba(0, 0, 0, 0.75); 
+            /* (선택 사항) 배경에 블러 효과를 주어 더 고급스럽게 만들고 싶다면 아래 주석을 해제하세요 */
+            /* backdrop-filter: blur(5px); */
             color: #fff;
             transform: translateY(20px);
             opacity: 0;
@@ -148,7 +151,7 @@
             padding-bottom: 56.25%; /* 16:9 비율 */
             height: 0;
             margin-bottom: 20px;
-            display: none; /* 영상이 있을 때만 JS에서 노출 */
+            display: none; 
         }
 
         .video-container iframe {
