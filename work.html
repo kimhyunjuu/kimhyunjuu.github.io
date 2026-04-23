@@ -26,11 +26,10 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            /* 🔥 더욱 스무스하고 고급스러운 사라짐 애니메이션 적용 */
             transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* 스크롤 내릴 때 헤더를 위로 숨기는 클래스 */
+        /* 스크롤을 내렸을 때 헤더를 위로 숨기는 클래스 */
         .header.hidden {
             transform: translateY(-100%);
         }
@@ -194,7 +193,7 @@
 
         .close-btn { position: fixed; top: 30px; right: 40px; color: white; font-size: 3rem; cursor: pointer; z-index: 1001; }
 
-        /* 🔥 변경된 위로 가기 버튼(Top Scroll Toggle) 화이트 스타일 */
+        /* 위로 가기 버튼(Top Scroll Toggle) 화이트 스타일 */
         #scrollTopBtn {
             position: fixed;
             bottom: 40px;
@@ -226,7 +225,7 @@
         #scrollTopBtn:hover {
             background-color: #f8f8f8;
             transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08); /* 호버 시 그림자 살짝 진하게 */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
         }
 
         #scrollTopBtn svg {
@@ -522,8 +521,7 @@
             if (e.key === 'Escape') closeModal();
         });
 
-        // [스크롤 이벤트 처리: 헤더 숨김 및 위로 가기 버튼]
-        let lastScrollTop = 0;
+        // 🔥 [스크롤 이벤트 처리: 헤더 숨김 및 위로 가기 버튼]
         const header = document.querySelector('.header');
         const scrollTopBtn = document.getElementById('scrollTopBtn');
 
@@ -537,16 +535,12 @@
                 scrollTopBtn.classList.remove('show');
             }
 
-            // 2. 상단 헤더 숨김/표시 (부드러운 애니메이션 적용)
-            if (scrollTop > lastScrollTop && scrollTop > 80) {
-                // 아래로 스크롤
+            // 2. 상단 헤더 로직 변경 (페이지 최상단인 50px 이하에서만 보이고, 그 이상 내려가면 무조건 숨김)
+            if (scrollTop > 50) {
                 header.classList.add('hidden');
             } else {
-                // 위로 스크롤
                 header.classList.remove('hidden');
             }
-            
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
         });
 
         // 위로 가기 버튼 클릭 이벤트
