@@ -26,6 +26,13 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            /* 🔥 헤더 숨김 애니메이션을 위한 트랜지션 추가 */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        /* 🔥 스크롤 내릴 때 헤더를 위로 숨기는 클래스 */
+        .header.hidden {
+            transform: translateY(-100%);
         }
 
         .back-btn {
@@ -120,7 +127,7 @@
         .card-info p { font-size: 0.85rem; color: #ddd; }
         .card:hover .card-info { transform: translateY(0); opacity: 1; }
 
-        /* 🔥 3단 키워드 태그 스타일 */
+        /* 3단 키워드 태그 스타일 */
         .card-tags {
             margin-top: 12px;
             display: flex;
@@ -132,7 +139,7 @@
             display: inline-block;
             padding: 4px 12px;
             border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 20px; /* 동그란 토글 형태 */
+            border-radius: 20px; 
             font-size: 0.75rem;
             color: #fff;
             background-color: rgba(255, 255, 255, 0.1);
@@ -180,7 +187,6 @@
         #modalImg { width: 100%; height: auto; display: block; border-radius: 4px; }
         .modal-text { color: white; margin-top: 30px; text-align: center; font-size: 1.2rem; line-height: 1.6; }
         
-        /* 모달 내 태그 중앙 정렬 */
         .modal-text .card-tags {
             justify-content: center;
             margin-top: 16px;
@@ -188,12 +194,52 @@
 
         .close-btn { position: fixed; top: 30px; right: 40px; color: white; font-size: 3rem; cursor: pointer; z-index: 1001; }
 
+        /* 🔥 위로 가기 버튼(Top Scroll Toggle) 스타일 */
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 50px;
+            height: 50px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 900;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #scrollTopBtn.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        #scrollTopBtn:hover {
+            background-color: #333;
+            transform: translateY(-3px);
+        }
+
+        #scrollTopBtn svg {
+            width: 24px;
+            height: 24px;
+        }
+
         @media (max-width: 768px) {
             .filter-container { padding: 0 20px; gap: 10px; margin-top: 20px; justify-content: center; flex-wrap: wrap; }
             .filter-btn { font-size: 0.7rem; }
             .gallery-container { grid-template-columns: 1fr; padding: 20px; gap: 20px; }
             .modal-content-wrapper { width: 95%; }
             .card { height: 300px; }
+            #scrollTopBtn { bottom: 20px; right: 20px; width: 40px; height: 40px; } /* 모바일에서 버튼 크기 축소 */
         }
     </style>
 </head>
@@ -395,12 +441,16 @@
         <span class="close-btn" onclick="closeModal(event)">&times;</span>
         <div class="modal-content-wrapper" onclick="event.stopPropagation();">
             <div id="videoContainer" class="video-container"></div>
-            
             <img id="modalImg" src="" decoding="async">
-            
             <div id="modalCaption" class="modal-text"></div>
         </div>
     </div>
+
+    <button id="scrollTopBtn" title="Go to top">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+    </button>
 
     <script>
         // [필터링 기능]
@@ -435,7 +485,6 @@
             modal.style.display = "block";
             document.body.style.overflow = "hidden"; // 스크롤 방지
             
-            // 1. 유튜브 비디오 체크 및 설정
             const videoId = cardElement.getAttribute("data-video");
             if (videoId && videoId.trim() !== "") {
                 videoContainer.style.display = "block";
@@ -445,15 +494,11 @@
                 videoContainer.innerHTML = "";
             }
 
-            // 2. 상세 이미지 설정
             const fullImageSrc = cardElement.getAttribute("data-full");
             modalImg.src = fullImageSrc ? fullImageSrc : cardElement.querySelector("img").src;
             
-            // 3. 텍스트 및 태그 설정
             const title = cardElement.querySelector("h3").innerText;
             const desc = cardElement.querySelector("p").innerText;
-            
-            // 추가된 태그 HTML을 그대로 복사해 모달에도 예쁘게 표시합니다.
             const tagsElement = cardElement.querySelector(".card-tags");
             const tagsHTML = tagsElement ? tagsElement.outerHTML : "";
 
@@ -465,7 +510,6 @@
             modal.style.display = "none";
             document.body.style.overflow = "auto"; // 스크롤 복구
             
-            // 모달을 닫을 때 영상 중지 및 소스 초기화
             setTimeout(() => { 
                 modalImg.src = ""; 
                 videoContainer.innerHTML = "";
@@ -473,9 +517,44 @@
             }, 100);
         }
 
-        // ESC 키로 모달 닫기 추가
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeModal();
+        });
+
+        // 🔥 [스크롤 이벤트 처리: 헤더 숨김 및 위로 가기 버튼]
+        let lastScrollTop = 0;
+        const header = document.querySelector('.header');
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            // 1. 위로 가기 버튼 표시/숨김 (300px 이상 스크롤 시 나타남)
+            if (scrollTop > 300) {
+                scrollTopBtn.classList.add('show');
+            } else {
+                scrollTopBtn.classList.remove('show');
+            }
+
+            // 2. 상단 헤더 숨김/표시 (스크롤 내릴 때 숨기고, 올릴 때 표시)
+            if (scrollTop > lastScrollTop && scrollTop > 80) {
+                // 아래로 스크롤
+                header.classList.add('hidden');
+            } else {
+                // 위로 스크롤
+                header.classList.remove('hidden');
+            }
+            
+            // 모바일 환경 등에서 바운스 효과로 인해 음수 값이 나오는 것 방지
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
+        });
+
+        // 🔥 위로 가기 버튼 클릭 이벤트
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // 부드럽게 스크롤
+            });
         });
     </script>
 </body>
